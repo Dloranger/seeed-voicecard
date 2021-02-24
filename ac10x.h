@@ -29,13 +29,18 @@
 /* enable headset detecting & headset button pressing */
 #define CONFIG_AC101_SWITCH_DETECT
 
+/* obsolete */
+#define CONFIG_AC10X_TRIG_LOCK	0
+
 
 #ifdef AC101_DEBG
-    #define AC101_DBG(format,args...)  printk("[AC101] "format,##args)
+    #define AC101_DBG(format,args...)  printk("[AC101] %s() L%d " format, __func__, __LINE__, ##args)
 #else
     #define AC101_DBG(...)
 #endif
 
+
+#include "sound-compatible-4.18.h"
 
 #ifdef CONFIG_AC101_SWITCH_DETECT
 enum headphone_mode_u {
@@ -75,7 +80,7 @@ struct ac10x_priv {
 
 	#ifdef CONFIG_AC101_SWITCH_DETECT
 	struct gpio_desc* gpiod_irq;
-	int irq;
+	long irq;
 	volatile int irq_cntr;
 	volatile int pullout_cntr;
 	volatile int state;
